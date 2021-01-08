@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>windows记事本</title>
+    <link href="./index.css" rel="styleSheet" type="text/css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="title">
+            <span><span class="iconfont">&#xe705;</span>扫雷</span>
+            <span class="pageBtn">
+                <button>
+                    <p><b>_</b></p>
+                </button>
+                <button>
+                    <p><b>□</b></p>
+                </button>
+                <button>
+                    <p class="file_close"><b>x</b></p>
+                </button>
+            </span>
+        </div>
+        <div class="menu">
+            <span data-menu="game" class="menu_btn">游戏(G)</span>
+            <div class="game curMenu">
+                <!-- <div class="item menu_item"><span>打开新文件</span><span>Ctrl+N</span></div> -->
+                <div class="item menu_item" data-class="game_new"><span>开始游戏</span><span>Ctrl+shift+N</span></div>
+                <div class="item menu_item" data-class="game_pause"><span>暂停游戏</span><span>Ctrl+S</span></div>
+                <hr>
+                <div class="item menu_item" data-class="game_history_score"><span>游戏记录</span><span>Ctrl+P</span></div>
+                <hr>
+                <div class="item menu_item" data-class="game_close"><span>结束</span><span>Ctrl+N</span></div>
+            </div>
+            <span data-menu="help" class="menu_btn">帮助(H)</span>
+            <div class="help curMenu">
+                <div class="item menu_item"><span><a
+                            href="https://github.com/yanglinyun/windows-notepad/blob/master/README.md"
+                            target="__blank">查看说明</a></span></div>
+                <hr>
+                <div class="item menu_item" data-class="help_about">
+                    <span>关于扫雷</span>
+                </div>
+            </div>
+        </div>
+        <div class="dialog">
+            <div class="item help_about">
+                <div class="title">
+                    <span>关于&nbsp扫雷</span>
+                    <span class="pageBtn">
+                        <button class="closeBtn" data-dialog="help_about">
+                            <p><b>x</b></p>
+                        </button>
+                    </span>
+                </div>
+                <div class="logo">
+                    <span>Windows 10</span>
+                </div>
+                @2019 Microsoft Corporation 著作權所有,並保留一切權力
+            </div>
+            <div class="item success">
+                <div class="title">
+                    <span>结果</span>
+                    <span class="pageBtn">
+                        <button class="closeBtn" data-dialog="help_about">
+                            <p><b>x</b></p>
+                        </button>
+                    </span>
+                </div>
+                <div class="content">
+                    扫雷成功!手牵手趟过雷场移交百姓!
+                    <img src="./img/success.jpg" alt="">
+
+
+                </div>
+            </div>
+            <div class="item failed">
+                <div class="title">
+                    <span>结果</span>
+                    <span class="pageBtn">
+                        <button class="closeBtn" data-dialog="help_about">
+                            <p><b>x</b></p>
+                        </button>
+                    </span>
+                </div>
+                <div class="content">
+                    扫雷失败!下次小心!
+                </div>
+
+            </div>
+            <div class="item game_history_score">
+                <div class="title">
+                    <span>历史成绩</span>
+                    <span class="pageBtn">
+                        <button class="closeBtn" data-dialog="help_about">
+                            <p><b>x</b></p>
+                        </button>
+                    </span>
+                </div>
+                <div class="content scoreList">
+
+                </div>
+
+            </div>
+        </div>
+        <div class="func"></div>
+        <div class="content">
+            <div class="scoreBox">
+                <span class="game_time score">00</span>
+                <button class="smile"><span class="iconfont">&#xe627;</span></button>
+                <span class="rest_flag score">00</span>
+            </div>
+            <div class="checkBoard">
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./index.js"></script>
+
+</html>

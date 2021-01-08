@@ -1,0 +1,37 @@
+{
+  "id": "2316891",
+  "name": "扫雷",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "654295",
+      "name": "笑脸",
+      "font_class": "xiaolian",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "3588606",
+      "name": "炸弹",
+      "font_class": "zhadan",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "3874703",
+      "name": "旗子",
+      "font_class": "qizi",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "11520201",
+      "name": "哭脸",
+      "font_class": "kulian",
+      "unicode": "e758",
+      "unicode_decimal": 59224
+    }
+  ]
+}
