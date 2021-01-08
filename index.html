@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <title>windows记事本</title>
+    <title>windows扫雷</title>
     <link href="./index.css" rel="styleSheet" type="text/css">
 </head>
 
@@ -38,7 +38,7 @@
             <span data-menu="help" class="menu_btn">帮助(H)</span>
             <div class="help curMenu">
                 <div class="item menu_item"><span><a
-                            href="https://github.com/yanglinyun/windows-notepad/blob/master/README.md"
+                            href="https://github.com/yanglinyun/windows-sweepMine/blob/master/README.md"
                             target="__blank">查看说明</a></span></div>
                 <hr>
                 <div class="item menu_item" data-class="help_about">
@@ -90,6 +90,20 @@
                     扫雷失败!下次小心!
                 </div>
 
+            </div>
+            <div class="item replay">
+                <div class="title">
+                    <span>是否重新开始</span>
+                    <span class="pageBtn">
+                        <button class="closeBtn" data-dialog="help_about">
+                            <p><b>x</b></p>
+                        </button>
+                    </span>
+                </div>
+                <div class="content">
+                    <button class="replay_btn" data-value="yes">是</button>
+                    <button class="replay_btn" data-value="no">否</button>
+                </div>
             </div>
             <div class="item game_history_score">
                 <div class="title">

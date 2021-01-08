@@ -169,6 +169,7 @@ var color = [
   "red",
 ];
 var timer = "";
+var tempTimer = "";
 function init() {
   setMine();
   setBlocks();
@@ -233,10 +234,12 @@ function leftClickHandle(e) {
     }
     getEle(".smile")[0].innerHTML = `<span class="iconfont">&#xe758;</span>`; //笑脸变哭脸
     success_or_failed();
-    alert("gameover!");
-    if (confirm("重新开始吗?")) {
-      replay();
-    }
+    var failed = getEle(".failed")[0];
+    failed.style.display = "block";
+    var replayDialog = getEle(".replay")[0];
+    tempTimer = setTimeout(() => {
+      replayDialog.style.display = "block";
+    }, 1000);
     return;
   } else {
     curObj.classList.add("checked");
@@ -302,14 +305,13 @@ function rightClickHandle(e) {
     if (curFindMines == mineCount) {
       //所有雷找到
       success_or_failed();
-      var successDialog = document.getElementsByClassName("success")[0];
+      var successDialog = getEle(".success")[0];
+      var replayDialog = getEle(".replay")[0];
       successDialog.style.display = "block";
+      tempTimer = setTimeout(() => {
+        replayDialog.style.display = "block";
+      }, 1000);
       historyScore.push(gameTime);
-      if (confirm("重新开始吗?")) {
-        successDialog.style.display = "none";
-        replay();
-      }
-      return;
     }
   }
 }
@@ -377,7 +379,7 @@ function game_history_score() {
   var list = getEle(".scoreList")[0];
   list.innerHTML = `<ol>`;
   for (var i = 0; i < historyScore.length; i++) {
-    list.innerHTML += `<li>${historyScore[i]}</li>`;
+    list.innerHTML += `<li>${historyScore[i]}秒</li>`;
   }
   list.innerHTML += `<ol>`;
 }
@@ -426,4 +428,24 @@ function game_pause() {
       update_game_time();
     }, 1000);
   }
+}
+var replay_btns = getEle(".replay_btn");
+addEvent(replay_btns, "click", isReplay);
+function isReplay(e) {
+  var curObj = e.target;
+  var res = getAttr(curObj, "data-value");
+  var successDialog = getEle(".success")[0];
+  var failedDialog = getEle(".failed")[0];
+  var replayDialog = getEle(".replay")[0];
+  if (tempTimer != "") {
+    clearTimeout(tempTimer);
+    tempTimer = "";
+  }
+  if (res == "yes") {
+    replay();
+  }
+  successDialog.style.display = "none";
+  failedDialog.style.display = "none";
+  replayDialog.style.display = "none";
+  return false;
 }
