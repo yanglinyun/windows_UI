@@ -92,8 +92,6 @@ function setAttr(obj, attr, value) {
         eval(curDialogName + "()");
       } catch (e) {}
     } else if (curDialogName) {
-      //无页面显示的功能
-      eval(curDialogName + "()");
       //打勾
       var menu_item_actived = curObj.getElementsByClassName(
         "menu_item_actived"
@@ -103,8 +101,28 @@ function setAttr(obj, attr, value) {
         menu_item_actived.style.visibility =
           menu_item_actived_visibility == "visible" ? "hidden" : "visible";
       }
+      //无页面显示的功能
+      eval(curDialogName + "()");
+      
     }
   });
+  //为所有title绑定长按一秒拖拽事件
+  var titleS = getEle(".title");
+  addEvent(titleS, "mousedown", clickDownHandle);
+  addEvent(titleS, "touchdown", clickDownHandle);
+  function clickDownHandle(e){
+    var curObj = e.target;
+    var startTime = getCurTime();
+    var timer = setInterval(function(){
+      if(getCurTime()-startTime>1000){
+        clearInterval(timer);
+        drag(curObj.parentNode.parentNode.parentNode,curObj.parentNode);
+      }
+    },100);
+  }
+  function getCurTime(){
+    return new Date().getTime();
+  }
   //-------------------------------------------------------
   //对话框关闭按钮点击事件
   var closeBtns = document.getElementsByClassName("closeBtn");
@@ -120,14 +138,27 @@ function setAttr(obj, attr, value) {
   addEvent(cancelFinds, "click", (e) => {
     // e.stopPropagation();
     e.preventDefault();
-
     var dialogName = getAttr(e.target, "data-dialog");
     var dialog = document.getElementsByClassName(dialogName)[0];
     if (dialog) {
       dialog.style.display = "none";
     }
   });
+  //含有子菜单的选项事件函数
+  var has_sub_menu = document.getElementsByClassName("has_sub_menu");
+  addEvent(has_sub_menu, "click", has_sub_menu_handle);
+  function has_sub_menu_handle(e) {
+    e.stopPropagation();
+    var cur_sub_menu = e.target.getElementsByClassName("subMenu")[0];
 
+    var cur_sub_menu_dispaly = css(cur_sub_menu, "display");
+    console.log(cur_sub_menu_dispaly);
+    if (cur_sub_menu_dispaly == "block") {
+      cur_sub_menu.style.display = "none";
+    } else {
+      cur_sub_menu.style.display = "block";
+    }
+  }
   //点击页面任意地方菜单栏隐藏
   function appHiddenMenu() {
     var app = document.getElementById("app");
@@ -144,308 +175,33 @@ function setAttr(obj, attr, value) {
   }
   appHiddenMenu();
 })();
-//游戏逻辑
-var historyScore = [];
-var mineCount = 10; //炸弹个数==旗数
-var flagCount = mineCount; //旗数
-var gameTime = 0; //游戏时间
-var cols = 10; //列
-var rows = 10; //行
-var total = cols * rows;
-var mineMap = []; //{row:行,col:列};炸弹位置信息
-var checkBorad = getEle(".checkBoard")[0];
-var curFindMines = 0;
-var color = [
-  "black",
-  "blue",
-  "yellow",
-  "red",
-  "skyblue",
-  "blue",
-  "red",
-  "orange",
-  "red",
-  "red",
-  "red",
-];
-var timer = "";
-var tempTimer = "";
-function init() {
-  setMine();
-  setBlocks();
-  update_Rest_Flag();
-  //为方块绑定鼠标 左 点击事件
-  addEvent(getEle(".block"), "click", clickHandle);
-  document.oncontextmenu = rightClickHandle;
-  getEle(".smile")[0].innerHTML = `<span class="iconfont">&#xe627;</span>`; //笑脸变哭脸
-  timer = setInterval(() => {
-    gameTime++;
-    update_game_time();
-  }, 1000);
-}
-function success_or_failed() {
-  clearInterval(timer);
-}
-function replay() {
-  success_or_failed();
-  mineCount = 10; //炸弹个数==旗数
-  flagCount = mineCount; //旗数
-  gameTime = 0; //游戏时间
-  cols = 10; //列
-  rows = 10; //行
-  total = cols * rows;
-  mineMap = []; //{row:行,col:列};炸弹位置信息
-  checkBorad.innerHTML = "";
-  curFindMines = 0;
-  timer = "";
-  update_game_time();
-  update_Rest_Flag();
-  init();
-}
-function clickHandle(e) {
-  if (e.button == 0) {
-    leftClickHandle(e);
-  }
-}
-//左点击事件
-function leftClickHandle(e) {
-  var curObj = e.target;
-  var isChecked = curObj.classList.contains("checked");
-  var isMine = curObj.classList.contains("isMine");
-  if (isChecked) {
-    //已经被点击退出
-    return;
-  }
-  var hasFlag = curObj.classList.contains("flag");
-  if (hasFlag) {
-    //有旗帜
-    curObj.classList.remove("flag");
-    curObj.innerHTML = ``;
-    flagCount++;
-    if (isMine) {
-      curFindMines--; //已找到炸弹数-1
-    }
-  }
-  //加checked
-  if (isMine) {
-    var allMinesBlock = getEle(".isMine");
-    for (var i = 0; i < allMinesBlock.length; i++) {
-      allMinesBlock[i].innerHTML = `<span class="iconfont">&#xe705;</span>`;
-    }
-    getEle(".smile")[0].innerHTML = `<span class="iconfont">&#xe758;</span>`; //笑脸变哭脸
-    success_or_failed();
-    var failed = getEle(".failed")[0];
-    failed.style.display = "block";
-    var replayDialog = getEle(".replay")[0];
-    tempTimer = setTimeout(() => {
-      replayDialog.style.display = "block";
-    }, 1000);
-    return;
-  } else {
-    curObj.classList.add("checked");
-    getNearMinesCount(curObj);
-  }
-}
-function getNearMinesCount(obj) {
-  var posArr = getAttr(obj, "data-pos").split("-");
-  var row = parseInt(posArr[0]);
-  var col = parseInt(posArr[1]);
-
-  var nearMinesCount = 0;
-  for (var i = row - 1; i <= row + 1; i++) {
-    for (var j = col - 1; j <= col + 1; j++) {
-      var curNearObj = getEle(`#id${i}-${j}`);
-      if (curNearObj) {
-        if (curNearObj.classList.contains("isMine")) {
-          nearMinesCount++;
-        }
-      }
-    }
-  }
-  //写入附近雷个数
-  obj.innerText = nearMinesCount;
-  obj.style.color = color[nearMinesCount];
-  if (nearMinesCount == 0) {
-    for (var i = row - 1; i <= row + 1; i++) {
-      for (var j = col - 1; j <= col + 1; j++) {
-        var curNearBlock = getEle(`#id${i}-${j}`);
-        if (curNearBlock) {
-          curNearBlock.click(); //递归
-        }
-      }
-    }
-  }
-}
-//右点击事件
-function rightClickHandle(e) {
-  e.returnValue = false; //禁用右键菜单
-  var curObj = e.target;
-  //如果已经被左击选中checked就退出
-  if (curObj.classList.contains("checked")) {
-    return;
-  }
-  var isMine = curObj.classList.contains("isMine");
-  if (curObj.classList.contains("flag")) {
-    curObj.classList.remove("flag");
-    curObj.innerHTML = ``;
-    update_Rest_Flag("+");
-    if (isMine) {
-      curFindMines--; //已找到炸弹数-1
-    }
-  } else {
-    if (!update_Rest_Flag("-")) {
-      return;
-    }
-    curObj.classList.add("flag");
-    curObj.innerHTML = `<span class="iconfont">&#xe732;</span>`;
-
-    if (isMine) {
-      curFindMines++; //已找到炸弹数-1
-    }
-    if (curFindMines == mineCount) {
-      //所有雷找到
-      success_or_failed();
-      var successDialog = getEle(".success")[0];
-      var replayDialog = getEle(".replay")[0];
-      successDialog.style.display = "block";
-      tempTimer = setTimeout(() => {
-        replayDialog.style.display = "block";
-      }, 1000);
-      historyScore.push(gameTime);
-    }
-  }
-}
-//依据炸弹位置生成方块
-function setBlocks() {
-  for (var i = 0; i < rows; i++) {
-    for (var j = 0; j < cols; j++) {
-      var block =
-        `<div class="block ` +
-        (isMine(i, j) ? "isMine" : "") +
-        `" id="id${i}-${j}" data-pos="${i}-${j}"></div>`;
-      checkBorad.innerHTML += block;
-    }
-  }
-}
-//是否为炸弹
-function isMine(row, col) {
-  for (var i = 0; i < mineMap.length; i++) {
-    var curMine = mineMap[i];
-    if (row == curMine.row && col == curMine.col) {
-      return true;
-    }
-  }
-  return false;
-}
-//随机设置炸弹位置
-function setMine() {
-  var tempMines = [];
-  while (mineCount) {
-    var tempRand = Math.round(Math.random() * total); //[0-100]
-    if (tempMines.indexOf(tempRand) == -1) {
-      tempMines.push(tempRand);
-      mineCount--;
-    }
-  }
-  mineCount = tempMines.length;
-  for (var i = 0; i < mineCount; i++) {
-    mineMap.push({ row: parseInt(tempMines[i] / 10), col: tempMines[i] % 10 });
-  }
-}
-function update_Rest_Flag(direction) {
-  //+/-
-  if (direction == "-") {
-    if (flagCount - 1 < 0) {
-      alert("沒有旗帜了!");
-      return false;
-    } else {
-      flagCount--;
-    }
-  } else if (direction == "+") {
-    flagCount++;
-  }
-  getEle(".rest_flag")[0].innerText =
-    flagCount < 10 ? "0" + flagCount : flagCount;
-  return true;
-}
-function update_game_time() {
-  getEle(".game_time")[0].innerText = gameTime < 10 ? "0" + gameTime : gameTime;
-}
-
 //-------------------------------------------------------
 //dialog事件处理函数
-function game_history_score() {
-  historyScore = bubbleSort(historyScore);
-  var list = getEle(".scoreList")[0];
-  list.innerHTML = `<ol>`;
-  for (var i = 0; i < historyScore.length; i++) {
-    list.innerHTML += `<li>${historyScore[i]}秒</li>`;
+//无dialog窗事件处理函数
+function view_footerInfo() {
+  var footerInfo = document.getElementsByClassName("footerInfo")[0];
+  var footerInfo_display = css(footerInfo, "display");
+  var textarea = document.getElementsByTagName("textarea")[0];
+  if (footerInfo_display == "none") {
+    footerInfo.style.display = "block";
+    textarea.style.height = "87.2909699%";
+  } else {
+    footerInfo.style.display = "none";
+    textarea.style.height = "89%";
   }
-  list.innerHTML += `<ol>`;
 }
-function bubbleSort(arr) {
-  for (var i = 0; i < arr.length - 1; i++) {
-    var isSwap = false;
-    for (var j = 0; j < arr.length - 1 - i; j++) {
-      if (arr[j] < arr[j + 1]) {
-        var temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-        isSwap = true;
-      }
+function file_new() {
+ 
+    if (confirm("是否保存当前文件!")) {
+      file_save();
+      return;
     }
-    if (!isSwap) {
-      break;
-    }
-  }
-  return arr;
+
+  content = "";
+  textarea.value = "";
 }
 //-------------------------------------------------------
 //功能区func点击事件
-function game_new() {
-  if (timer != "") {
-    replay();
-  } else {
-    init();
-  }
-}
-function game_close() {
-  if (confirm("是否离开")) {
-    window.opener = null;
-    window.open("", "_self");
-    window.close();
-  }
-}
-function game_pause() {
-  if (timer != "") {
-    clearInterval(timer);
-    timer = "";
-    alert("暂停,休息一下!");
-  } else if (getEle(".block").length > 0) {
-    alert("继续扫雷!");
-    timer = setInterval(() => {
-      gameTime++;
-      update_game_time();
-    }, 1000);
-  }
-}
-var replay_btns = getEle(".replay_btn");
-addEvent(replay_btns, "click", isReplay);
-function isReplay(e) {
-  var curObj = e.target;
-  var res = getAttr(curObj, "data-value");
-  var successDialog = getEle(".success")[0];
-  var failedDialog = getEle(".failed")[0];
-  var replayDialog = getEle(".replay")[0];
-  if (tempTimer != "") {
-    clearTimeout(tempTimer);
-    tempTimer = "";
-  }
-  if (res == "yes") {
-    replay();
-  }
-  successDialog.style.display = "none";
-  failedDialog.style.display = "none";
-  replayDialog.style.display = "none";
-  return false;
-}
+//file_new
+var func_file_new = document.getElementsByClassName("file_new")[0];
+func_file_new.addEventListener("click", file_new);

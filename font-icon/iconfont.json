@@ -1,37 +1,93 @@
 {
-  "id": "2316891",
-  "name": "扫雷",
+  "id": "2317948",
+  "name": "windows-ui",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "654295",
-      "name": "笑脸",
-      "font_class": "xiaolian",
-      "unicode": "e627",
-      "unicode_decimal": 58919
+      "icon_id": "1271059",
+      "name": "粘贴",
+      "font_class": "niantie",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
     },
     {
-      "icon_id": "3588606",
-      "name": "炸弹",
-      "font_class": "zhadan",
-      "unicode": "e705",
-      "unicode_decimal": 59141
+      "icon_id": "1367336",
+      "name": "新建",
+      "font_class": "xinjian",
+      "unicode": "e615",
+      "unicode_decimal": 58901
     },
     {
-      "icon_id": "3874703",
-      "name": "旗子",
-      "font_class": "qizi",
-      "unicode": "e732",
-      "unicode_decimal": 59186
+      "icon_id": "1428198",
+      "name": "粘贴 ",
+      "font_class": "niantie1",
+      "unicode": "e612",
+      "unicode_decimal": 58898
     },
     {
-      "icon_id": "11520201",
-      "name": "哭脸",
-      "font_class": "kulian",
-      "unicode": "e758",
-      "unicode_decimal": 59224
+      "icon_id": "1764678",
+      "name": "缩小",
+      "font_class": "suoxiao",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "2449780",
+      "name": "望远镜",
+      "font_class": "wangyuanjing",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "5564395",
+      "name": "离开",
+      "font_class": "exit",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "5801253",
+      "name": "放大",
+      "font_class": "fangda1",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "7120651",
+      "name": "剪切",
+      "font_class": "jianqie",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "9793986",
+      "name": "复制",
+      "font_class": "fuzhi",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "11511856",
+      "name": "保存",
+      "font_class": "baocun",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    },
+    {
+      "icon_id": "13976226",
+      "name": "打开文件夹",
+      "font_class": "icon-test",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "11093921",
+      "name": "windows",
+      "font_class": "windows",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
     }
   ]
 }

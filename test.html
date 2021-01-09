@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    #dragDiv1{
+      width:400px;
+      height: 400px;
+      background: #ccc;
+      position: relative;
+      margin: 20px;
+    }
+    #drag1{
+      width: 100px;
+      height: 100px;
+      background: red;
+      position: absolute;
+    }
+    .box{
+          border: 1px dashed black;
+          position: absolute;
+      }
+  </style>
+</head>
+<body>
+  <div id="dragDiv1">
+        11111111111111111111
+        <div id="drag1">拖拽2-带框拖拽</div>
+    </div>
+
+
+  <script type="text/javascript">
+    window.onload=function(){
+      //拖拽3:结合DOM,带框的拖拽
+      var oDragDiv1=document.getElementById('dragDiv1');
+      var oDrag1=document.getElementById('drag1');
+      oDrag1.onmousedown=function(ev){
+        var oEvent=ev||event;
+        var pos=getMousePosition(oEvent);
+        var disX=pos.x-oDrag1.offsetLeft;
+        var disY=pos.y-oDrag1.offsetTop;
+        //定义拖出来的框
+        var oBox=document.createElement('div');
+        oBox.className='box';
+        oBox.style.width=oDrag1.offsetWidth-2+'px';
+        oBox.style.height=oDrag1.offsetHeight-2+'px';
+        //每次拖动时,给虚框div的初始位置和红色实体初始位置相同,防止虚框闪动
+        oBox.style.left=oDrag1.offsetLeft+'px';
+        oBox.style.top=oDrag1.offsetTop+'px';
+        oDragDiv1.appendChild(oBox);
+        if(oBox.setCapture){
+          //兼容IE7-11
+          oBox.onmousemove=Mousemove;
+          oBox.onmouseup=mouseUp;
+          oBox.setCapture();
+        }else{
+          //兼容FF,Chrome
+          document.onmousemove=Mousemove;
+          document.onmouseup=mouseUp;
+        }
+
+        function getMousePosition(ev){
+          var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+          var scrollLeft=document.documentElement.scrollLeft||document.body.scrollLeft;
+          return {x:ev.clientX+scrollLeft,y:ev.clientY+scrollTop};
+        };
+        //合并代码
+        function Mousemove(ev){
+          var oEvent=ev||event
+          var pis=getMousePosition(oEvent);
+          var l=pis.x-disX;
+          var t=pis.y-disY;
+
+          //3.限制范围,磁性吸附,快接近父级时,自动吸附上去
+          if (l<30) {
+            l=0;
+          }else if(l>oDragDiv1.offsetWidth-oBox.offsetWidth){
+            l=oDragDiv1.offsetWidth-oBox.offsetWidth;
+          }
+          if (t<30) {
+            t=0;
+          }else if(t>oDragDiv1.offsetHeight-oBox.offsetHeight){
+            t=oDragDiv1.offsetHeight-oBox.offsetHeight;
+          }
+          oBox.style.left=l+'px';
+          oBox.style.top=t+'px';
+        };
+        function mouseUp(){
+          //当鼠标抬起时,mousemove/up清空
+          this.onmousemove=null;
+          this.onmouseup=null;
+          oDrag1.style.left=oBox.offsetLeft+'px';
+          oDrag1.style.top=oBox.offsetTop+'px';
+          oDragDiv1.removeChild(oBox);
+          if (oBox.releaseCapture) {
+            oBox.releaseCapture();
+          }
+        };
+        return false;    //FF中阻止默认行为
+      };
+    }
+  </script>
+</body>
+</html>

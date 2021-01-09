@@ -4,14 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <title>windows扫雷</title>
+    <title>windows_ui</title>
     <link href="./index.css" rel="styleSheet" type="text/css">
 </head>
 
 <body>
     <div id="app">
+        <!-- 标题区 -->
         <div class="title">
-            <span><span class="iconfont">&#xe705;</span>扫雷</span>
+            <span>
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-windows"></use>
+                </svg>
+                windows_ui</span>
             <span class="pageBtn">
                 <button>
                     <p><b>_</b></p>
@@ -24,32 +29,153 @@
                 </button>
             </span>
         </div>
+        <!-- 菜单区 -->
         <div class="menu">
-            <span data-menu="game" class="menu_btn">游戏(G)</span>
-            <div class="game curMenu">
+            <span data-menu="file" class="menu_btn">文件(F)</span>
+            <div class="file curMenu">
                 <!-- <div class="item menu_item"><span>打开新文件</span><span>Ctrl+N</span></div> -->
-                <div class="item menu_item" data-class="game_new"><span>开始游戏</span><span>Ctrl+shift+N</span></div>
-                <div class="item menu_item" data-class="game_pause"><span>暂停游戏</span><span>Ctrl+S</span></div>
+                <div class="item menu_item" data-class="file_new"><span>新建文件</span><span>Ctrl+shift+N</span></div>
+                <div class="item menu_item" data-class="file_open"><input type="file" accept=".txt"
+                        style="display: none;" id="uploadText"><span>开启文件</span><span>Ctrl+O</span></div>
+                <div class="item menu_item" data-class="file_save"><span>保存文件</span><span>Ctrl+S</span></div>
                 <hr>
-                <div class="item menu_item" data-class="game_history_score"><span>游戏记录</span><span>Ctrl+P</span></div>
+                <div class="item menu_item" data-class="file_paint"><span>打印</span><span>Ctrl+P</span></div>
                 <hr>
-                <div class="item menu_item" data-class="game_close"><span>结束</span><span>Ctrl+N</span></div>
+                <div class="item menu_item" data-class="file_close"><span>结束</span><span>Ctrl+N</span></div>
+            </div>
+            <span data-menu="edit" class="menu_btn">编辑(E)</span>
+            <div class="edit curMenu">
+                <div class="item menu_item" data-class="edit_return"><span>还原</span><span>Ctrl+Z</span></div>
+                <hr>
+                <div class="item menu_item" data-class="edit_cut"><span>剪切</span><span>Ctrl+X</span></div>
+                <div class="item menu_item" data-class="edit_copy"><span>复制</span><span>Ctrl+C</span></div>
+                <div class="item menu_item" data-class="edit_paste"><span>粘贴</span><span>Ctrl+V</span></div>
+                <div class="item menu_item" data-class="edit_del"><span>删除</span><span>Del</span></div>
+                <hr>
+                <div class="item menu_item edit_find_item" data-class="edit_find"><span>查找</span><span>Ctrl+F</span>
+                </div>
+                <div class="item menu_item" data-class="edit_find_next"><span>找下一个</span><span>F3</span></div>
+                <div class="item menu_item" data-class="edit_find_prev"><span>找上一个</span><span>shift+F3</span></div>
+                <div class="item menu_item" data-class="edit_replace"><span>替换</span><span>Ctrl+H</span></div>
+                <hr>
+                <div class="item menu_item" data-class="edit_select_all"><span>全选</span><span>Ctrl+A</span></div>
+                <div class="item menu_item" data-class="edit_insert_time"><span>时间/日期</span><span>F5</span></div>
+            </div>
+            <span data-menu="view" class="menu_btn">视图(V)</span>
+            <div class="view curMenu">
+                <div class="item menu_item has_sub_menu" data-class="view_scale">
+                    <span>缩放</span><span>></span>
+                    <div class="subMenu">
+                        <div class="item menu_item" data-class="view_scale_zoom_in"><span>放大</span><span>Ctrl+"+"</span>
+                        </div>
+                        <div class="item menu_item" data-class="view_scale_zoom_out">
+                            <span>缩小</span><span>Ctrl+"-"</span></div>
+                    </div>
+                </div>
+                <div class="item menu_item" data-class="view_footerInfo"><span
+                        class="menu_item_actived">√</span><span>状态栏</span></div>
+                <hr>
+                <!-- <div class="item menu_item" data-class="view_skin"><span>换肤</span></div> -->
+                <div class="item menu_item" data-class="view_wrap"><span
+                        class="menu_item_actived">√</span><span>自动换行</span></div>
             </div>
             <span data-menu="help" class="menu_btn">帮助(H)</span>
             <div class="help curMenu">
                 <div class="item menu_item"><span><a
-                            href="https://github.com/yanglinyun/windows-sweepMine/blob/master/README.md"
+                            href="https://github.com/yanglinyun/windows-notepad/blob/master/README.md"
                             target="__blank">查看说明</a></span></div>
                 <hr>
                 <div class="item menu_item" data-class="help_about">
-                    <span>关于扫雷</span>
+                    <span>关于windows_UI</span>
                 </div>
             </div>
         </div>
+        <!-- 功能按钮区 -->
+        <div class="func">
+            <span class="iconfont file_new">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-xinjian"></use>
+                </svg>
+            </span>
+            <span class="iconfont file_open">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-icon-test"></use>
+                </svg>
+            </span>
+            <span class="iconfont file_save">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-baocun"></use>
+                </svg>
+            </span>
+            <span class="iconfont edit_cut">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-jianqie"></use>
+                </svg>
+            </span>
+            <span class="iconfont edit_copy">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-fuzhi"></use>
+                </svg>
+            </span>
+            <span class="iconfont edit_paste">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-niantie1"></use>
+                </svg>
+            </span>
+            <span class="iconfont edit_find_func">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-wangyuanjing"></use>
+                </svg>
+            </span>
+            <span class="iconfont view_scale_zoom_in">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-fangda1"></use>
+                </svg>
+            </span>
+            <span class="iconfont view_scale_zoom_out">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-suoxiao"></use>
+                </svg>
+            </span>
+            <span class="iconfont file_close">
+                <svg class="icon icon_min" aria-hidden="true">
+                    <use xlink:href="#icon-exit"></use>
+                </svg>
+            </span>
+        </div>
+        <!-- 业务显示区 -->
+        <div class="content" style="background: url(./img/xp.jpg);background-position: center center;">
+            <h1>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-windows"></use>
+                </svg>
+                欢迎使用windows_UI界面
+            </h1>
+        </div>
+        <!-- 页脚信息区 -->
+        <div class="footerInfo">
+            <span id="row_col">
+                行<span id="row"></span>
+                &nbsp;&nbsp;
+                列<span id="col"></span>
+                &nbsp;&nbsp;
+                选择的字节<span id="selected"></span>
+            </span>
+            <span id="sizeBox">
+                <span id="size"></span>字节
+            </span>
+            <span id="charSetBox">
+                <span id="charSet">ANSI</span>
+            </span>
+            <span id="fileTypeBox">
+                <span id="fileType">文本文档</span>
+            </span>
+        </div>
+        <!-- 对话框区 -->
         <div class="dialog">
             <div class="item help_about">
                 <div class="title">
-                    <span>关于&nbsp扫雷</span>
+                    <span>关于&nbsp;windows_UI</span>
                     <span class="pageBtn">
                         <button class="closeBtn" data-dialog="help_about">
                             <p><b>x</b></p>
@@ -61,78 +187,84 @@
                 </div>
                 @2019 Microsoft Corporation 著作權所有,並保留一切權力
             </div>
-            <div class="item success">
+            <div class="item edit_find">
                 <div class="title">
-                    <span>结果</span>
+                    <span>寻找</span>
                     <span class="pageBtn">
-                        <button class="closeBtn" data-dialog="help_about">
+                        <button class="closeBtn" data-dialog="edit_find">
                             <p><b>x</b></p>
                         </button>
                     </span>
                 </div>
-                <div class="content">
-                    扫雷成功!手牵手趟过雷场移交百姓!
-                    <img src="./img/success.jpg" alt="">
+                <div class="func">
+                    <form id="find_form" onsubmit="return find_form_handle(this)">
+                        <div class="funcLeft">
 
+                            <div class="search">
+                                <span>寻找目标:</span><input type="text" name="searchInput">
+                            </div>
+                            <div class="options">
+                                <span><input type="checkbox" name="case_sensitive" id="case_sensitive" checked><label
+                                        for="case_sensitive">大小写敏感</label></span>
+                                <fieldset>
+                                    <legend>方向</legend>
+                                    <input type="radio" value="up" name="direction" id="up" /><label for="up">向上</label>
+                                    <input type="radio" value="down" name="direction" id="down" checked /><label
+                                        for="down">向下</label>
+                                </fieldset>
+                            </div>
 
+                        </div>
+                        <div class="funcRight">
+                            <input name="submit" type="submit" value="下一个" style="width: 100%;">
+                            <button class="cancelFind" data-dialog="edit_find">取消</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="item failed">
+            <div class="item edit_replace">
                 <div class="title">
-                    <span>结果</span>
+                    <span>替换</span>
                     <span class="pageBtn">
-                        <button class="closeBtn" data-dialog="help_about">
+                        <button class="closeBtn" data-dialog="edit_replace">
                             <p><b>x</b></p>
                         </button>
                     </span>
                 </div>
-                <div class="content">
-                    扫雷失败!下次小心!
-                </div>
+                <div class="func">
+                    <form id="replace_find" onsubmit="return find_replace_form_handle(this)">
+                        <div class="funcLeft">
+                            <div class="search">
+                                <span>寻找目标:</span><input type="text" name="searchInput">
+                                <br><br>
+                                <span>取代为:&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text" name="replaceInput">
+                            </div>
+                            <div class="options">
+                                <span><input type="checkbox" name="case_sensitive" id="case_sensitive" checked><label
+                                        for="case_sensitive">大小写敏感</label></span>
+                                <fieldset>
+                                    <legend>方向</legend>
+                                    <input type="radio" value="up" name="direction" id="up" /><label for="up">向上</label>
+                                    <input type="radio" value="down" name="direction" id="down" checked /><label
+                                        for="down">向下</label>
+                                </fieldset>
+                            </div>
 
-            </div>
-            <div class="item replay">
-                <div class="title">
-                    <span>是否重新开始</span>
-                    <span class="pageBtn">
-                        <button class="closeBtn" data-dialog="help_about">
-                            <p><b>x</b></p>
-                        </button>
-                    </span>
+                        </div>
+                        <div class="funcRight">
+                            <input name="submit" type="submit" value="下一个" style="width: 100%;">
+                            <input name="submit" type="submit" value="取代" style="width: 100%;">
+                            <!-- <input name="submit" type="submit" value="全部取代" style="width: 100%;"> -->
+                            <button class="cancelFind" data-dialog="edit_replace">取消</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="content">
-                    <button class="replay_btn" data-value="yes">是</button>
-                    <button class="replay_btn" data-value="no">否</button>
-                </div>
-            </div>
-            <div class="item game_history_score">
-                <div class="title">
-                    <span>历史成绩</span>
-                    <span class="pageBtn">
-                        <button class="closeBtn" data-dialog="help_about">
-                            <p><b>x</b></p>
-                        </button>
-                    </span>
-                </div>
-                <div class="content scoreList">
-
-                </div>
-
-            </div>
-        </div>
-        <div class="func"></div>
-        <div class="content">
-            <div class="scoreBox">
-                <span class="game_time score">00</span>
-                <button class="smile"><span class="iconfont">&#xe627;</span></button>
-                <span class="rest_flag score">00</span>
-            </div>
-            <div class="checkBoard">
-
             </div>
         </div>
     </div>
 </body>
+<script src="./font-icon/iconfont.js"></script>
+<script src="./drag.js"></script>
 <script src="./index.js"></script>
 
 </html>
